@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading mb-4">
+  <div>
+    <p class="eyebrow">OVERVIEW</p>
+    <h1>Dashboard</h1>
+    <p class="text-muted">Welcome, {{ user.username }}. Here is your inventory summary.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'product_create' %}">Add product</a>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-sm-4">
+    <div class="card summary-card h-100"><div class="card-body">
+      <div class="summary-label">Total products</div><p class="summary-number">{{ product_count }}</p>
+    </div></div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card summary-card categories h-100"><div class="card-body">
+      <div class="summary-label">Categories</div><p class="summary-number">{{ category_count }}</p>
+    </div></div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card summary-card out-of-stock h-100"><div class="card-body">
+      <div class="summary-label">Out of stock</div><p class="summary-number">{{ out_of_stock_count }}</p>
+    </div></div>
+  </div>
+</div>
+<section class="card">
+  <div class="card-body">
+    <h2 class="section-title">Recently added products</h2>
+    {% if recent_products %}
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <thead><tr><th>Name</th><th>SKU</th><th>Category</th><th>Quantity</th><th></th></tr></thead>
+          <tbody>
+            {% for product in recent_products %}
+              <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.sku }}</td>
+                <td>{{ product.category.name|default:"Uncategorized" }}</td>
+                <td>{{ product.quantity }}</td>
+                <td><a href="{% url 'product_detail' product.pk %}">View</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state"><h3>No products yet</h3><p>Add your first product to see it here.</p><a class="btn btn-primary" href="{% url 'product_create' %}">Add product</a></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

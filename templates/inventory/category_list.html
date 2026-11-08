@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><p class="eyebrow">ORGANIZATION</p><h1>Categories</h1><p class="text-muted">Group products to keep your stock organized.</p></div>
+  <a class="btn btn-primary" href="{% url 'category_create' %}">Add category</a>
+</div>
+<div class="card">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead><tr><th>Name</th><th>Description</th><th>Products</th><th></th></tr></thead>
+        <tbody>
+          {% for category in categories %}
+            <tr>
+              <td>{{ category.name }}</td>
+              <td>{{ category.description|default:"—" }}</td>
+              <td>{{ category.products.count }}</td>
+              <td>
+                <a href="{% url 'category_update' category.pk %}">Edit</a>
+                <a class="text-danger ms-2" href="{% url 'category_delete' category.pk %}">Delete</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4"><div class="empty-state">No categories have been added yet.</div></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
